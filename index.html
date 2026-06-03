@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReservaLab Professor</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">RL</div>
+        <div>
+          <h1>ReservaLab</h1>
+          <span>Professor</span>
+        </div>
+      </div>
+
+      <nav>
+        <button class="nav-btn active" data-section="dashboard">Dashboard</button>
+        <button class="nav-btn" data-section="reservas">Minhas Reservas</button>
+        <button class="nav-btn" data-section="novaReserva">Nova Reserva</button>
+        <button class="nav-btn admin-only" data-section="admin">Administração</button>
+      </nav>
+
+      <div class="user-card">
+        <small>Usuário logado</small>
+        <strong id="usuarioNome">Professor</strong>
+        <span id="usuarioTipo">Professor</span>
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div>
+          <h2 id="pageTitle">Dashboard</h2>
+          <p>Sistema de reserva de laboratórios acadêmicos</p>
+        </div>
+
+        <div class="login-box">
+          <label for="tipoUsuario">Perfil:</label>
+          <select id="tipoUsuario">
+            <option value="professor">Professor</option>
+            <option value="admin">Administrador</option>
+          </select>
+        </div>
+      </header>
+
+      <section id="dashboard" class="section active">
+        <div class="cards">
+          <div class="card">
+            <span>Reservas Pendentes</span>
+            <strong id="qtdPendentes">2</strong>
+          </div>
+          <div class="card">
+            <span>Reservas Aprovadas</span>
+            <strong id="qtdAprovadas">3</strong>
+          </div>
+          <div class="card">
+            <span>Laboratórios</span>
+            <strong>5</strong>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Calendário de Reservas</h3>
+          <div id="calendario" class="calendar"></div>
+        </div>
+      </section>
+
+      <section id="reservas" class="section">
+        <div class="panel">
+          <h3>Minhas Reservas</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Laboratório</th>
+                <th>Turma</th>
+                <th>Disciplina</th>
+                <th>Data</th>
+                <th>Horário</th>
+                <th>Status</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody id="listaReservas"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="novaReserva" class="section">
+        <div class="panel form-panel">
+          <h3>Nova Reserva</h3>
+          <form id="formReserva">
+            <div class="form-grid">
+              <label>
+                Laboratório
+                <select id="laboratorio" required>
+                  <option value="Laboratório 01">Laboratório 01</option>
+                  <option value="Laboratório 02">Laboratório 02</option>
+                  <option value="Laboratório de Informática">Laboratório de Informática</option>
+                </select>
+              </label>
+
+              <label>
+                Turma
+                <select id="turma" required>
+                  <option value="ADS 1º Semestre">ADS 1º Semestre</option>
+                  <option value="Engenharia 3º Semestre">Engenharia 3º Semestre</option>
+                  <option value="Técnico em Informática">Técnico em Informática</option>
+                </select>
+              </label>
+
+              <label>
+                Disciplina
+                <input id="disciplina" type="text" placeholder="Ex: Programação Web" required />
+              </label>
+
+              <label>
+                Data
+                <input id="data" type="date" required />
+              </label>
+
+              <label>
+                Horário inicial
+                <input id="inicio" type="time" required />
+              </label>
+
+              <label>
+                Horário final
+                <input id="fim" type="time" required />
+              </label>
+            </div>
+
+            <button class="primary" type="submit">Solicitar Reserva</button>
+            <p id="mensagemForm" class="message"></p>
+          </form>
+        </div>
+      </section>
+
+      <section id="admin" class="section">
+        <div class="panel">
+          <h3>Área Administrativa</h3>
+          <p class="hint">A coordenação pode visualizar, aprovar, recusar ou cancelar reservas.</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Professor</th>
+                <th>Laboratório</th>
+                <th>Data</th>
+                <th>Horário</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="listaAdmin"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
