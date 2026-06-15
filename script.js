@@ -42,32 +42,62 @@ const listaAdmin = document.getElementById('listaAdmin');
 const calendario = document.getElementById('calendario');
 const formReserva = document.getElementById('formReserva');
 const mensagemForm = document.getElementById('mensagemForm');
+const adminOnlyItems = document.querySelectorAll('.admin-only');
+const professorOnlyItems = document.querySelectorAll('.professor-only');
+
+function obterPerfilAtual() {
+  return tipoUsuario.value;
+}
+
+function obterNomeProfessorAtual() {
+  return 'Professor';
+}
+
+function obterMinhasReservas() {
+  const professorAtual = obterNomeProfessorAtual();
+  return reservas.filter(reserva => reserva.professor === professorAtual);
+}
+
+function ativarSecao(sectionId) {
+  navButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.section === sectionId));
+  sections.forEach(section => section.classList.toggle('active', section.id === sectionId));
+
+  const botaoAtivo = [...navButtons].find(btn => btn.dataset.section === sectionId);
+  pageTitle.textContent = botaoAtivo ? botaoAtivo.textContent : 'Dashboard';
+}
 
 navButtons.forEach(button => {
   button.addEventListener('click', () => {
-    navButtons.forEach(btn => btn.classList.remove('active'));
-    sections.forEach(section => section.classList.remove('active'));
+    if (button.classList.contains('hidden')) {
+      return;
+    }
 
-    button.classList.add('active');
-    document.getElementById(button.dataset.section).classList.add('active');
-    pageTitle.textContent = button.textContent;
+    ativarSecao(button.dataset.section);
   });
 });
 
 tipoUsuario.addEventListener('change', atualizarPerfil);
 
 function atualizarPerfil() {
-  const isAdmin = tipoUsuario.value === 'admin';
+  const isAdmin = obterPerfilAtual() === 'admin';
 
-  usuarioNome.textContent = isAdmin ? 'Coordenação' : 'Professor';
+  usuarioNome.textContent = isAdmin ? 'Coordenação' : obterNomeProfessorAtual();
   usuarioTipo.textContent = isAdmin ? 'Administrador' : 'Professor';
 
-  document.querySelectorAll('.admin-only').forEach(item => {
-    item.classList.toggle('hidden', !isAdmin);
-  });
+  adminOnlyItems.forEach(item => item.classList.toggle('hidden', !isAdmin));
+  professorOnlyItems.forEach(item => item.classList.toggle('hidden', isAdmin));
 
+  const secaoAtual = document.querySelector('.section.active')?.id;
+  const secaoInvalida = (isAdmin && secaoAtual === 'novaReserva') || (!isAdmin && secaoAtual === 'admin');
+
+  if (secaoInvalida) {
+    ativarSecao('dashboard');
+  }
+
+  mensagemForm.textContent = '';
   renderizarReservas();
   renderizarAdmin();
+  renderizarCalendario();
 }
 
 function statusBadge(status) {
@@ -75,7 +105,13 @@ function statusBadge(status) {
 }
 
 function renderizarReservas() {
-  const minhas = reservas.filter(reserva => reserva.professor === 'Professor');
+  const minhas = obterMinhasReservas();
+
+  if (!minhas.length) {
+    listaReservas.innerHTML = '<tr><td colspan="7">Nenhuma reserva encontrada.</td></tr>';
+    atualizarIndicadores();
+    return;
+  }
 
   listaReservas.innerHTML = minhas.map((reserva, index) => `
     <tr>
@@ -93,6 +129,11 @@ function renderizarReservas() {
 }
 
 function renderizarAdmin() {
+  if (obterPerfilAtual() !== 'admin') {
+    listaAdmin.innerHTML = '';
+    return;
+  }
+
   listaAdmin.innerHTML = reservas.map((reserva, index) => `
     <tr>
       <td>${reserva.professor}</td>
@@ -114,7 +155,7 @@ function renderizarCalendario() {
 
   for (let dia = 1; dia <= 30; dia++) {
     const data = `2026-06-${String(dia).padStart(2, '0')}`;
-    const reservasDia = reservas.filter(reserva => reserva.data === data);
+    const reservasDia = reservas.filter(reserva => reserva.data === data && reserva.status !== 'cancelada' && reserva.status !== 'recusada');
 
     const div = document.createElement('div');
     div.className = 'day';
@@ -131,21 +172,39 @@ function renderizarCalendario() {
 formReserva.addEventListener('submit', event => {
   event.preventDefault();
 
+  if (obterPerfilAtual() !== 'professor') {
+    mensagemForm.textContent = 'Apenas professores podem solicitar reservas.';
+    mensagemForm.style.color = '#991b1b';
+    return;
+  }
+
   const novaReserva = {
-    professor: 'Professor',
+    professor: obterNomeProfessorAtual(),
     laboratorio: document.getElementById('laboratorio').value,
     turma: document.getElementById('turma').value,
-    disciplina: document.getElementById('disciplina').value,
+    disciplina: document.getElementById('disciplina').value.trim(),
     data: document.getElementById('data').value,
     inicio: document.getElementById('inicio').value,
     fim: document.getElementById('fim').value,
     status: 'pendente'
   };
 
+  if (!novaReserva.data || !novaReserva.inicio || !novaReserva.fim || !novaReserva.disciplina) {
+    mensagemForm.textContent = 'Preencha todos os campos obrigatórios.';
+    mensagemForm.style.color = '#991b1b';
+    return;
+  }
+
+  if (novaReserva.fim <= novaReserva.inicio) {
+    mensagemForm.textContent = 'O horário final deve ser maior que o horário inicial.';
+    mensagemForm.style.color = '#991b1b';
+    return;
+  }
+
   const conflito = reservas.some(reserva =>
     reserva.laboratorio === novaReserva.laboratorio &&
     reserva.data === novaReserva.data &&
-    reserva.status !== 'cancelada' &&
+    !['cancelada', 'recusada'].includes(reserva.status) &&
     novaReserva.inicio < reserva.fim &&
     novaReserva.fim > reserva.inicio
   );
@@ -167,7 +226,7 @@ formReserva.addEventListener('submit', event => {
 });
 
 function cancelarReserva(index) {
-  const minhas = reservas.filter(reserva => reserva.professor === 'Professor');
+  const minhas = obterMinhasReservas();
   const reservaSelecionada = minhas[index];
   const indiceReal = reservas.indexOf(reservaSelecionada);
 
@@ -188,8 +247,10 @@ function alterarStatus(index, status) {
 }
 
 function atualizarIndicadores() {
-  document.getElementById('qtdPendentes').textContent = reservas.filter(r => r.status === 'pendente').length;
-  document.getElementById('qtdAprovadas').textContent = reservas.filter(r => r.status === 'aprovada').length;
+  const base = obterPerfilAtual() === 'admin' ? reservas : obterMinhasReservas();
+
+  document.getElementById('qtdPendentes').textContent = base.filter(r => r.status === 'pendente').length;
+  document.getElementById('qtdAprovadas').textContent = base.filter(r => r.status === 'aprovada').length;
 }
 
 function formatarData(data) {
