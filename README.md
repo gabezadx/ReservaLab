@@ -9,6 +9,16 @@ O ReservaLab Professor é um sistema web desenvolvido para gerenciar reservas de
 Facilitar o processo de agendamento de laboratórios, evitando conflitos de horário e centralizando o gerenciamento das reservas.
 
 
+## Como executar localmente
+
+1. Baixe ou clone o projeto.
+2. Abra a pasta do projeto no VS Code.
+3. Abra o arquivo `index.html` no navegador.
+4. Faça login com um dos usuários de teste.
+
+Também é possível usar a extensão **Live Server** do VS Code.
+
+
 ## Funcionalidades
 
 
@@ -157,3 +167,64 @@ mysql -u root -p reservalab < backup_reservalab.sql
 ## Observação
 
 Este plano foi elaborado para fins acadêmicos e poderá ser expandido em versões futuras.
+
+
+### Como executar o backend
+
+```bash
+cd backend
+npm install
+npm run seed
+npm start
+```
+
+Antes de executar, importe o arquivo `banco.sql` no MySQL e configure o arquivo `.env`.
+
+
+## Usuários de teste
+
+| Perfil | E-mail | Senha |
+|-----------|--------------------------|--------|
+| Professor | professor@reservalab.com | 123456 |
+| Coordenação | coordenacao@reservalab.com | 123456 |
+| Administrador | admin@reservalab.com | 123456 |
+
+## Perfis de acesso
+
+### Professor
+
+- Pode criar reserva de laboratório.
+- Pode visualizar suas próprias reservas.
+- Pode cancelar suas próprias reservas.
+- Não pode aprovar, recusar ou visualizar todas as reservas.
+
+### Coordenação
+
+- Pode visualizar todas as reservas.
+- Pode aprovar reservas.
+- Pode recusar reservas.
+- Pode cancelar reservas.
+- Pode visualizar logs de auditoria.
+- Não aparece como responsável por reserva de aula.
+
+### Administrador
+
+- Pode visualizar todas as reservas.
+- Pode aprovar, recusar ou cancelar reservas.
+- Pode gerenciar cadastros do sistema.
+- Pode visualizar logs de auditoria.
+- Não aparece como responsável por reserva de aula.
+
+
+## AppSec / Segurança da Aplicação
+
+O projeto possui uma base de segurança de aplicação compatível com a proposta acadêmica:
+
+- Login obrigatório antes de acessar o sistema.
+- Separação de permissões por perfil.
+- Senhas não ficam armazenadas em texto puro; são salvas como hash SHA-256.
+- O professor só pode cancelar reservas criadas por ele mesmo.
+- Professor não consegue acessar a área administrativa.
+- Administrador e coordenação não conseguem criar reserva como responsáveis por aula.
+- Tentativas de acesso sem permissão são bloqueadas e registradas em auditoria.
+- Os dados do sistema ficam persistidos no navegador através de `localStorage`.
