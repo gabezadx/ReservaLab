@@ -63,7 +63,7 @@ Entidades principais:
 - CSS
 - JavaScript
 - MySQL
-
+- Node.js/Express
 
 ## Requisitos Atendidos
 
