@@ -63,3 +63,97 @@ Entidades principais:
 - CSS
 - JavaScript
 - MySQL
+
+
+## Requisitos Atendidos
+
+✅ Autenticação de usuários
+
+✅ Três perfis de acesso
+
+✅ Banco de dados persistente
+
+✅ Senhas com hash (bcrypt)
+
+✅ Controle de autorização
+
+✅ Ações bloqueadas por permissão
+
+✅ Logs de auditoria
+
+✅ Relatório parcial de segurança
+
+✅ Plano inicial de backup e restauração
+
+
+
+# Relatório Parcial
+
+## Controles Implementados
+
+- Autenticação de usuários.
+- Controle de acesso por perfil.
+- Três perfis de acesso (Professor, Coordenação e Administrador).
+- Senhas armazenadas com hash utilizando bcrypt.
+- Persistência de dados em banco MySQL.
+- Logs de auditoria.
+- Controle de autorização por perfil e por dono do recurso.
+
+## Evidências
+
+- Login funcional com validação de credenciais.
+- Bloqueio de acesso para usuários sem permissão.
+- Registro de ações na tabela de auditoria.
+- Reservas armazenadas no banco de dados.
+
+## Riscos Identificados
+
+- Ambiente executado localmente sem HTTPS.
+- Chave JWT simplificada para ambiente acadêmico.
+- Ausência de autenticação multifator.
+- Dependência de um único banco de dados.
+
+## Limitações
+
+- Não possui recuperação de senha.
+- Não possui autenticação em dois fatores.
+- Não possui integração com sistemas institucionais.
+- Não possui alta disponibilidade.
+
+
+# Plano Inicial de Backup e Restauração
+
+## Estratégia de Backup
+
+O banco de dados deverá possuir backup diário utilizando a ferramenta mysqldump.
+
+Exemplo:
+
+mysqldump -u root -p reservalab > backup_reservalab.sql
+
+## Armazenamento
+
+Os backups poderão ser armazenados:
+- Em diretório local.
+- Em dispositivo externo.
+- Em armazenamento em nuvem.
+
+## Processo de Restauração
+
+Exemplo:
+
+mysql -u root -p reservalab < backup_reservalab.sql
+
+## Testes de Recuperação
+
+- Verificar a integridade dos backups.
+- Realizar testes periódicos de restauração.
+
+## Responsáveis
+
+- Administrador do sistema.
+- Equipe de desenvolvimento.
+
+## Observação
+
+Este plano foi elaborado para fins acadêmicos e poderá ser expandido em versões futuras.
