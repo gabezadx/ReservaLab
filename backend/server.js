@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 require("dotenv").config();
 
 const authRoutes = require("./routes/auth");
@@ -11,10 +12,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Servir arquivos do frontend
+app.use(express.static(path.join(__dirname, "../front")));
+
+// Página inicial
 app.get("/", (req, res) => {
-  res.json({ mensagem: "API ReservaLab funcionando." });
+  res.sendFile(path.join(__dirname, "../front/index.html"));
 });
 
+// Rotas da API
 app.use("/auth", authRoutes);
 app.use("/reservas", reservaRoutes);
 app.use("/admin", adminRoutes);

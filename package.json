@@ -4,7 +4,7 @@
   "description": "API do sistema ReservaLab com Node.js, Express, MySQL, JWT, bcrypt e auditoria.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node backend/server.js",
     "dev": "nodemon server.js",
     "seed": "node seed.js"
   },
