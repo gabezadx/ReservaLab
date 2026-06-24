@@ -9,16 +9,6 @@ O ReservaLab Professor é um sistema web desenvolvido para gerenciar reservas de
 Facilitar o processo de agendamento de laboratórios, evitando conflitos de horário e centralizando o gerenciamento das reservas.
 
 
-## Como executar localmente
-
-1. Baixe ou clone o projeto.
-2. Abra a pasta do projeto no VS Code.
-3. Abra o arquivo `index.html` no navegador.
-4. Faça login com um dos usuários de teste.
-
-Também é possível usar a extensão **Live Server** do VS Code.
-
-
 ## Funcionalidades
 
 
