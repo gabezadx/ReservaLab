@@ -18,8 +18,8 @@ const initialData = {
   labs: ['Laboratório 01', 'Laboratório 02', 'Laboratório de Informática'],
   turmas: ['ADS 1º Semestre', 'Engenharia 3º Semestre', 'Técnico em Informática'],
   reservas: [
-    { id: crypto.randomUUID(), professorEmail: 'professor@reservalab.com', professor: 'Professor Teste', laboratorio: 'Laboratório 01', turma: 'ADS 1º Semestre', disciplina: 'Segurança da Informação', data: '2026-06-05', inicio: '19:00', fim: '21:00', status: 'pendente' },
-    { id: crypto.randomUUID(), professorEmail: 'professor@reservalab.com', professor: 'Professor Teste', laboratorio: 'Laboratório 02', turma: 'Engenharia 3º Semestre', disciplina: 'Banco de Dados', data: '2026-06-06', inicio: '18:30', fim: '20:00', status: 'aprovada' }
+    { id: crypto.randomUUID(), professorEmail: 'professor@reservalab.com', professor: 'Professor', laboratorio: 'Laboratório 01', turma: 'ADS 1º Semestre', disciplina: 'Segurança da Informação', data: '2026-06-05', inicio: '19:00', fim: '21:00', status: 'pendente' },
+    { id: crypto.randomUUID(), professorEmail: 'professor@reservalab.com', professor: 'Professor', laboratorio: 'Laboratório 02', turma: 'Engenharia 3º Semestre', disciplina: 'Banco de Dados', data: '2026-06-06', inicio: '18:30', fim: '20:00', status: 'aprovada' }
   ],
   audit: []
 };
@@ -62,9 +62,9 @@ async function initDatabase() {
   const senhaHash = await sha256('123456');
   db = structuredClone(initialData);
   db.users = [
-    { name: 'Professor Teste', email: 'professor@reservalab.com', role: 'professor', passwordHash: senhaHash },
-    { name: 'Coordenação Teste', email: 'coordenacao@reservalab.com', role: 'coordenacao', passwordHash: senhaHash },
-    { name: 'Administrador Teste', email: 'admin@reservalab.com', role: 'admin', passwordHash: senhaHash }
+    { name: 'Professor', email: 'professor@reservalab.com', role: 'professor', passwordHash: senhaHash },
+    { name: 'Coordenação', email: 'coordenacao@reservalab.com', role: 'coordenacao', passwordHash: senhaHash },
+    { name: 'Administrador', email: 'admin@reservalab.com', role: 'admin', passwordHash: senhaHash }
   ];
   addAudit('sistema', 'Banco local criado com usuários de teste e senhas com hash.', false);
   saveDb();
