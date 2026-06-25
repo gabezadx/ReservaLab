@@ -24,7 +24,7 @@
         <label>E-mail</label>
         <input id="loginEmail" type="email" placeholder="professor@reservalab.com" required>
         <label>Senha</label>
-        <input id="loginSenha" type="password" placeholder="123456" required>
+        <input id="loginSenha" type="password" required>
         <button type="submit" class="primary full">Entrar</button>
       </form>
       <div id="loginErro" class="message error hidden"></div>
@@ -81,17 +81,7 @@
         <div class="panel">
           <h3>Calendário de Reservas</h3>
           <div id="calendario" class="calendar-list"></div>
-        </div>
-        <div class="panel appsec">
-          <h3>AppSec implementado na demonstração</h3>
-          <ul>
-            <li>Login obrigatório antes de acessar o sistema.</li>
-            <li>Três perfis: professor, coordenação e administrador.</li>
-            <li>Senhas salvas com hash SHA-256 no armazenamento local.</li>
-            <li>Autorização por perfil e por dono da reserva.</li>
-            <li>Ações bloqueadas geram mensagem e registro de auditoria.</li>
-            <li>Banco de dados local persistente usando localStorage.</li>
-          </ul>
+        
         </div>
       </section>
 
