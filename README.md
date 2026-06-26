@@ -87,17 +87,12 @@ http://localhost:3000
 
 ### 6. Usuários de Teste
 
-#### Professor
+| Perfil        | Email                                                           | Senha  |
+| ------------- | --------------------------------------------------------------- | ------ |
+| Professor     | [professor@reservalab.com](mailto:professor@reservalab.com)     | 123456 |
+| Coordenação   | [coordenacao@reservalab.com](mailto:coordenacao@reservalab.com) | 123456 |
+| Administrador | [admin@reservalab.com](mailto:admin@reservalab.com)             | 123456 |
 
-* Perfil: Professor
-
-#### Coordenação
-
-* Perfil: Coordenação
-
-#### Administrador
-
-* Perfil: Administrador
 
 ### Funcionalidades Implementadas
 
